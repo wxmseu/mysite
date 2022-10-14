@@ -1,0 +1,52 @@
+{% extends 'myblog/layout.html' %}
+
+{% block content %}
+    <div>
+        <div class="container">
+            <div class="panel panel-primary">
+                <div class="panel-heading">{{ title }}</div>
+                <div class="panel-body">
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        {% for item in form %}
+                            <div class="form-group">
+                                <label>{{ item.label }}</label> : {{ item }}
+                                <span style="color: red">{{ item.errors.0 }}</span>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success">提交</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                    城市列表
+                </div>
+
+                <!-- Table -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>logo</th>
+                        <th>城市名</th>
+                        <th>城市总人口</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for city in city_list %}
+                        <tr>
+                            <td><img src="/media/{{ city.logo }}" alt="{{ city.city }}" style="height: 100px"></td>
+                            <td>{{ city.city }}</td>
+                            <td>{{ city.population }}</td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

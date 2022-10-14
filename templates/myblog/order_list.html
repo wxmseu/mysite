@@ -1,0 +1,228 @@
+{% extends 'myblog/layout.html' %}
+{% block content %}
+
+    <div class="container">
+        <input id="btnTest" type="button" class="btn btn-success" value="新建订单">
+        <div class="panel panel-default" style="margin-top: 20px">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                订单列表
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>订单号</th>
+                    <th>商品名称</th>
+                    <th>价格</th>
+                    <th>状态</th>
+                    <th>买家用户</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in query_set %}
+                    <tr>
+                        <td>{{ item.order_num }}</td>
+                        <td>{{ item.good_name }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.get_status_display }}</td>
+                        <td>{{ item.user }}</td>
+                        <td>
+                            <input uid="{{ item.id }}" type="button" class="btn btn-info btn-xs btn-edit" value="编辑">
+                            <input uid="{{ item.id }}" type="button" class="btn btn-danger btn-xs btn-delete" value="删除">
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <ul class="pagination">
+            {{ page_str }}
+        </ul>
+    </div>
+
+    <!-- 新建订单弹出框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">新建订单</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="formAdd">
+                        <div class="clearfix">
+                            {% for item in form %}
+                                <div class="col-xs-6">
+                                    <div class="form-group" style="position: relative">
+                                        <label>{{ item.label }}</label> : {{ item }}
+                                        <span class="error_msg" style="color: red;position: absolute"></span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btnAdd">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除对话框 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+
+                <h3>警告</h3>
+                <h4>是否确认删除当前数据!</h4>
+                <p style="text-align: right">
+                    <button type="button" class="btn btn-danger btn-confirm">确定删除</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        var delete_id;
+        var edit_id;
+        $(function () {
+            bindBtnShowEvent();
+            bindBtnAddEvent();
+            bindBtnDeleteEvent();
+            bindBtnEditEvent();
+        })
+
+        function bindBtnShowEvent() {
+            $('#btnTest').click(function () {
+                edit_id=undefined
+                $('#formAdd')[0].reset();
+                $('#myModalLabel').text('新建订单')
+                $('#myModal').modal('show')
+            })
+        }
+
+        function bindBtnAddEvent() {
+            $('#btnAdd').click(function () {
+                $('.error_msg').empty()
+                if (edit_id){
+                    // 编辑
+                    doEDIT()
+                }else{
+                    //添加
+                    doADD();
+                }
+
+            });
+        }
+        function doADD(){
+            $.ajax({
+                    url: '/order/add/',
+                    type: 'post',
+                    data: $('#formAdd').serialize(),
+                    dataType: 'JSON',
+                    success: function (res) {
+                        if (res.status) {
+                            alert('添加成功');
+                            // 清空表单
+                            $('#formAdd')[0].reset();
+                            // 关闭模态框
+                            $('#myModal').modal('hide')
+                            // 刷新页面
+                            location.reload()
+
+                        } else {
+                            $.each(res.error, function (name, data) {
+                                $('#id_' + name).next().text(data[0].message)
+                            })
+                        }
+
+                    }
+                })
+        }
+        function doEDIT(){
+            $.ajax({
+                    url: '/order/edit/'+'?uid='+edit_id,
+                    type: 'post',
+                    data: $('#formAdd').serialize(),
+                    dataType: 'JSON',
+                    success: function (res) {
+                        if (res.status) {
+                            alert('修改成功');
+                            // 清空表单
+                            $('#formAdd')[0].reset();
+                            // 关闭模态框
+                            $('#myModal').modal('hide')
+                            // 刷新页面
+                            location.reload()
+
+                        } else {
+                            $.each(res.error, function (name, data) {
+                                $('#id_' + name).next().text(data[0].message)
+                            })
+                        }
+
+                    }
+                })
+        }
+        function bindBtnDeleteEvent() {
+            $(".btn-delete").click(function () {
+                $('#deleteModal').modal('show')
+                // 获取当前行的id，并赋值给delete_id
+                delete_id= $(this).attr('uid')
+            });
+            $('.btn-confirm').click(function (){
+                $.ajax({
+                    url:'/order/delete/',
+                    type: "post",
+                    data: {'uid':delete_id},
+                    dataType: 'JSON',
+                    success:function (res){
+                        if(res.status){
+                            $('#deleteModal').modal('hide')
+                            location.reload()
+                        }
+                    }
+                })
+            });
+        }
+
+        function bindBtnEditEvent(){
+            $('.btn-edit').click(function (){
+                var uid =$(this).attr('uid')
+                edit_id =uid
+                $.ajax({
+                    url:"/order/detail/",
+                    type:'get',
+                    data:{'uid':uid},
+                    dataType:'JSON',
+                    success:function (res){
+                        if(res.status){
+                            $.each(res.data,function (name,value){
+                                $('#id_'+name).val(value);
+                            });
+                            $('#myModalLabel').text('编辑订单');
+                            $('#myModal').modal('show');
+                        }else{
+                            alert(res.error)
+                        }
+                    },
+                })
+            });
+        }
+
+
+    </script>
+{% endblock %}

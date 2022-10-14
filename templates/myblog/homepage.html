@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的个人笔记</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+</head>
+<style>
+    .main_body {
+        margin-top: 70px;
+        text-align: center;
+    }
+
+    .bottom_body {
+        font: 14px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif
+    }
+
+    .text {
+        width: 1170px;
+        font-size: 200px;
+        font-weight: 900;
+        background: url("{% static 'img/stars.jpg' %}");
+        {#background-clip: text;#}
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: dynamic 5s infinite alternate linear;
+    }
+
+    @keyframes dynamic {
+        0% {
+            background-position: 0%;
+        }
+        100% {
+            background-position: 100%;
+        }
+    }
+</style>
+<body>
+<div class="container main_body">
+    <h1>Hello! Welcome to my website for your studying! </h1>
+    <hr>
+    <div>
+        <a href="/user/list/">用户界面</a>
+        <a href="/login/">登录界面</a>
+        <a href="/movie/action/">视频动画</a>
+        <a href="/choices/">选号</a>
+        <a href="/practice/">各种练习</a>
+    </div>
+    <div style="margin-top: 30px;">
+        <div class="text">季        宝</div>
+    </div>
+
+    <div style="margin-top: 100px"></div>
+    <hr>
+</div>
+<div class="container" style="text-align: center">
+    <div class="bottom_body">
+        <address>
+            <span><strong>地址：</strong></span>
+            <span> 江苏省苏州市工业园区</span>
+            <span>东沙湖邻里中心</span>
+            <strong style="margin-left: 70px">联系方式:</strong><span> 18795880620 </span>
+            <span><a href="#">xiaomeng23@126.com</a></span>
+        </address>
+        <p><a href="https://beian.miit.gov.cn/" target="_blank">晋ICP备2022008715号</a></p>
+    </div>
+</div>
+
+
+</body>
+</html>

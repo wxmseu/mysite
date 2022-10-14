@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字动态背景</title>
+    <style>
+        .text{
+            width:1000px;
+            font-size: 120px;
+            font-weight: 900;
+            background: url("{% static 'img/stars.jpg' %}");
+            {#background-clip: text;#}
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: dynamic 5s infinite alternate linear;
+        }
+        @keyframes dynamic {
+            0%{
+                background-position: 0%;
+            }
+            100%{
+                background-position: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="text">Python</div>
+</body>
+</html>

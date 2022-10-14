@@ -1,0 +1,41 @@
+{% extends 'myblog/layout.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'plugins/datetimepicker/jquery.datetimepicker.min.css' %}">
+{% endblock %}
+{% block content %}
+<div>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">编辑用户</div>
+            <div class="panel-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% for item in form %}
+                    <div class="form-group">
+                        <label>{{item.label}}</label> : {{ item }}
+                        <span style="color: #ff0000">{{ item.errors.0 }}</span>
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'plugins/datetimepicker/jquery.datetimepicker.full.min.js' %}"></script>
+    <script>
+    $(function(){
+        $('#id_create_time').datetimepicker({
+            timepicker: false,
+            format: 'Y-m-d',
+            //theme: 'dark'
+        });
+        $.datetimepicker.setLocale('zh');
+    });
+    </script>
+{% endblock %}

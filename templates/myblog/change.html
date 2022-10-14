@@ -1,0 +1,22 @@
+{% extends 'myblog/layout.html' %}
+{% block content %}
+    <div>
+        <div class="container">
+            <div class="panel panel-primary">
+                <div class="panel-heading">{{ title }}</div>
+                <div class="panel-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% for item in form %}
+                            <div class="form-group">
+                                <label>{{ item.label }}</label> : {{ item }}
+                                <span style="color: red">{{ item.errors.0 }}</span>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success">提交</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

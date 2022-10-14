@@ -1,0 +1,62 @@
+{% extends 'myblog/layout.html' %}
+{% block content %}
+<div>
+        <div class="container">
+
+            <div style="margin-bottom: 20px;">
+                <a class="btn btn-success" href="/user/add/">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    添加用户
+                </a>
+            </div>
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                    用户列表
+                </div>
+
+                <!-- Table -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>姓名</th>
+                        <th>密码</th>
+                        <th>年龄</th>
+                        <th>账户余额</th>
+                        <th>入职时间</th>
+                        <th>部门</th>
+                        <th>性别</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users_info %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.password }}</td>
+                            <td>{{ user.age}}</td>
+                            <td>{{ user.account}}</td>
+                            <td>{{ user.create_time|date:"Y/m/d"}}</td>
+                            <td>{{ user.depart}}</td>
+                            <td>{{ user.get_gender_display}}</td>
+                            <td>
+                                <a href="/user/{{ user.id }}/edit/" class="btn btn-info btn-xs">编辑</a>
+                                <a href="/user/{{ user.id }}/delete/" class="btn btn-danger btn-xs">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <ul class="pagination">
+                {{ page_str }}
+            </ul>
+
+        </div>
+    </div>
+
+{% endblock %}

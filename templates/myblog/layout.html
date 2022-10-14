@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的个人笔记</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+    {% block css %}{% endblock %}
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+        .table th{
+            {#vertical-align: middle !important; // 上下垂直居中#}
+            text-align:center; // 左右居中
+        }
+        .table td{
+            text-align:center; // 左右居中
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">用户管理系统</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/admin/list/">管理员账户</a></li>
+                <li><a href="/depart/list/">部门管理</a></li>
+                <li><a href="/user/list/">用户管理</a></li>
+                <li><a href="/pretty_num/list/">靓号管理</a></li>
+                <li><a href="/task/list/">任务管理</a></li>
+                <li><a href="/order/list/">订单管理</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">其他管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/chart/list/">数据统计</a></li>
+                        <li><a href="/upload/form/">form上传</a></li>
+                        <li><a href="/upload/modelform/">modelform上传</a></li>
+
+                    </ul>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">{{ request.session.info.username }}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="#">个人信息</a></li>
+                        <li><a href="#">我的资料</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout/">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% block content %}{% endblock %}
+<div class="container">
+    <div>
+        <address>
+            <strong>地址：</strong><br>
+            江苏省苏州市工业园区<br>
+            东沙湖邻里中心<br>
+            <abbr title="Phone">联系方式</abbr> 18795880620
+        </address>
+
+        <address>
+            <strong>王潇猛</strong><br>
+            <a href="#">xiaomeng23@126.com</a>
+        </address>
+    </div>
+</div>
+
+<script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+{% block js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>视频动起来了</title>
+    <style>
+        body {
+            display: flex;
+        }
+
+        video, canvas {
+            border: 1px solid;
+        }
+    </style>
+</head>
+    <body>
+    <video id="video" oncanplay="init()" loop src="{% static "video/video1.mp4" %}" width="350px" height="600px"
+           controls></video>
+    <canvas id="cvs"></canvas>
+    <canvas id="cvs2" onclick="video.play()"></canvas>
+
+</body>
+<script type="text/javascript">
+    const init = () => {
+        const ctx = cvs.getContext('2d')
+        const ctx2 = cvs2.getContext('2d')
+        cvs.height = cvs2.height = video.offsetHeight
+        cvs.width = cvs2.width = video.offsetWidth
+        const playVideo = () => {
+            requestAnimationFrame(playVideo)
+            const {width, height} = cvs
+            ctx.drawImage(video, 0, 0, width, height)
+            const data = ctx.getImageData(0, 0, width, height).data
+            ctx2.clearRect(0, 0, width, height)
+            const bl = 8
+            ctx2.font = '12px serif'
+            for (let i = 0; i < data.length; i += 4 * bl) {
+                const x = parseInt((i + 1) % (width * 4) / 4)
+                const y = parseInt(i / (width * 4))
+                if (x % bl === 0 && y % bl === 0) {
+                    const g = parseInt((data[i] + data[i + 1] + data[i + 2]) / 1.8)
+                    ctx2.fillStyle = `rgba(${g},${g},${g},${data[i+3]})`
+                    ctx2.fillText('*', x, y)
+                }
+            }
+        }
+        playVideo()
+    }
+
+</script>
+</html>

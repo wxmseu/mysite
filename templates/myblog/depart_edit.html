@@ -1,0 +1,25 @@
+{%  extends 'myblog/layout.html' %}
+{% block content %}
+
+<div>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">部门信息</div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>部门</label>
+                        <input type="text" class="form-control" placeholder="部门" name="new_depart"
+                               value="{{ edit_depart.title }}">
+                    </div>
+                    <button type="submit" class="btn btn-danger">确认修改</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

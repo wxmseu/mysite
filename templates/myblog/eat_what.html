@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>今天吃啥</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to right, #434343 0%, black 100%);
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main {
+            text-align: center;
+            line-height: 50px;
+            font-size: 30px;
+        }
+
+        .main h1 {
+            font-size: 45px;
+            color: #dbdbdb;
+        }
+
+        #but {
+            cursor: pointer;
+            width: 160px;
+            height: 35px;
+            font-size: 18px;
+            line-height: 35px;
+            text-align: center;
+            border-radius: 35px;
+            background: orange;
+            margin-top: 20px;
+        }
+
+        #but :active {
+            opacity: 0.3;
+        }
+
+    </style>
+</head>
+<body>
+<div class="main">
+    <h1> 今天吃啥</h1>
+    <div style="color: #dbdbdb">吃：<span id="result"></span>？？？</div>
+    <div id="but" onclick="startF()">开始</div>
+</div>
+<script type="text/javascript">
+    let arr = ['小米粥', '油渣白菜', '蛋炒饭','藏书羊肉','烤鸭','面条','外卖'];
+    let flag = false;
+    let butDom = document.getElementById('but');
+    let resultDom = document.getElementById('result');
+    let len = arr.length;
+
+    // 开始
+    function startF() {
+        if (flag) {
+            stopF();
+            return;
+        }
+        flag = true;
+        butDom.innerText = '停';
+        // console.log('开始');
+        randomF(100);
+    }
+
+    // 结束
+    function stopF() {
+        // console.log('停');
+        randomF(100, true);
+    }
+
+    let intT;
+
+    function randomF(time, stop) {
+        // 获取数组随机索引
+        let index = Math.floor(Math.random() * len);
+        resultDom.innerText = arr[index];
+        // 清除定时器
+        if (intT) {
+            clearTimeout(intT);
+        }
+        if (time > 450) {
+            flag = false;
+            butDom.innerText = '不吃，再来一次';
+            return;
+        }
+        intT = setTimeout(function () {
+            if (stop) {
+                // console.log(time);
+                time += 20;
+            }
+            randomF(time, stop);
+        }, time)
+
+    }
+</script>
+</body>
+</html>

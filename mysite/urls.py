@@ -91,6 +91,7 @@ urlpatterns = [
     # 各种练习
     path('practice/', practice.practice),
     path('dynamic_content/', practice.dynamic_content),
+    path('eat_what/', practice.eat_what),
 
     # 上传文件
     path('upload/form/', upload.upload_form),

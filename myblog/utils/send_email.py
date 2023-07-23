@@ -19,8 +19,8 @@ def send_email(email, code):
     os.environ['DJANGO_SETTINGS_MODULE'] = 'stuffProject.settings'
     subject = '来自www.wxmseu.com的注册邮件确认'
     text_content = '欢迎访问www.wxmseu.com，这里是我的个人学习站点，专注于快乐知识技术的分享！您的验证码为：{}，请勿告诉他人'.format(code)
-    html_content = '欢迎注册,点此链接确认"http://{}/register/confirm/?code={}"。这里是我的个人学习站点，' \
-                   '专注于快乐知识技术的分享！'.format('127.0.0.1:8000', code)
+    html_content = '欢迎注册,点此链接确认"https://{}/register/confirm/?code={}"。这里是我的个人学习站点，' \
+                   '专注于快乐知识技术的分享！'.format('www.wxmseu.cn', code)
     msg = EmailMultiAlternatives(subject=subject, body=text_content, to=[email])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
